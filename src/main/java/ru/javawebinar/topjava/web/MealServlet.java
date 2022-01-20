@@ -6,6 +6,7 @@ import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.storage.MealMapStorage;
 import ru.javawebinar.topjava.storage.Storage;
 import ru.javawebinar.topjava.util.MealsUtil;
+import ru.javawebinar.topjava.util.TimeUtil;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -13,14 +14,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.net.http.HttpRequest;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
+import java.util.Objects;
 
 public class MealServlet extends HttpServlet {
     private static final Logger log = LoggerFactory.getLogger(MealServlet.class);
-    Storage storage;
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+    private Storage storage;
+
 
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -31,17 +32,11 @@ public class MealServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        log.info("getAll");
-        Integer id = null;
-        String idStr = req.getParameter("id");
-        if (idStr != null) {
-            id = Integer.valueOf(idStr);
-        }
         String action = req.getParameter("action");
 
         if (action == null) {
+            log.info("getAll");
             req.setAttribute("mealsTo", MealsUtil.getMealsWithExcessParameter(storage.getAllSorted(), MealsUtil.CALORIES_PER_DAY));
-            req.setAttribute("formatter", formatter);
             req.getRequestDispatcher("/meals.jsp").forward(req, resp);
             return;
         }
@@ -53,16 +48,17 @@ public class MealServlet extends HttpServlet {
                 m = new Meal(null, null, 0);
                 break;
             case "delete":
+                Integer id = getId(req);
+                log.info("Delete {}" ,id);
                 storage.delete(id);
                 resp.sendRedirect("meals");
                 return;
             case "update":
-                m = storage.get(id);
+                m = storage.get(getId(req));
         }
         req.setAttribute("meal", m);
         req.setAttribute("storage", storage);
         req.setAttribute("action", action);
-        req.setAttribute("formatter", formatter);
         req.getRequestDispatcher("/update.jsp")
                 .forward(req, resp);
     }
@@ -73,7 +69,7 @@ public class MealServlet extends HttpServlet {
         String idStr = req.getParameter("id");
         Integer id = idStr.isEmpty() ? null : Integer.parseInt(idStr);
         String date = req.getParameter("date");
-        LocalDateTime dateTime = LocalDateTime.parse(date, formatter);
+        LocalDateTime dateTime = LocalDateTime.parse(date, TimeUtil.getFormatter());
         String description = req.getParameter("description");
         int calories = Integer.parseInt(req.getParameter("calories"));
         Meal meal = new Meal(id,dateTime,description,calories);
@@ -81,5 +77,11 @@ public class MealServlet extends HttpServlet {
         log.info(meal.getId()==null? "Create {}":"Update {}",meal);
         storage.save(meal);
         resp.sendRedirect("meals");
+    }
+
+    private int getId(HttpServletRequest request){
+        String id = Objects.requireNonNull(request.getParameter("id"));
+        return  Integer.parseInt(id);
+
     }
 }

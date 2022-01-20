@@ -3,6 +3,7 @@ package ru.javawebinar.topjava.storage;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.model.MealTo;
 
+import java.util.Collection;
 import java.util.List;
 
 public interface Storage {
@@ -17,8 +18,7 @@ public interface Storage {
 
     Meal get(Integer id);
 
-    //TODO:Collection
-    List<Meal> getAllSorted();
+    Collection<Meal> getAllSorted();
 
 //    Meal get();
 //

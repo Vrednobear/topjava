@@ -46,9 +46,9 @@ public class MealMapStorage implements Storage {
     public Meal get(Integer id) {
         return mealsMap.get(id);
     }
-//TODO:return Collection not List
+
     @Override
-    public List<Meal> getAllSorted() {
+    public Collection<Meal> getAllSorted() {
         List<Meal> mealsList = new ArrayList<>(mealsMap.values());
         Collections.sort(mealsList, Comparator.comparing(Meal::getId));
         return mealsList;
