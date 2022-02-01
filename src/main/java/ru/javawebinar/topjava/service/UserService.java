@@ -21,6 +21,8 @@ public class UserService {
         this.repository = repository;
     }
 
+//    private  UserRepository repository;
+//    @Autowired
 //    public void setRepository(UserRepository repository) {
 //        this.repository = repository;
 //    }
