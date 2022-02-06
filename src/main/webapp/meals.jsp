@@ -51,5 +51,29 @@
         </c:forEach>
     </table>
 </section>
+
+<section>
+    <form method="post" action="meals" novalidate>
+        <input type="hidden" name="id" value="${meal.id}">
+        <input type="hidden" name="form" value="filter">
+        <dl>
+            <dt>From date (include):</dt>
+            <dd><input type="date" value="" name="startDate" required></dd>
+        </dl>
+        <dl>
+            <dt>To date (include):</dt>
+            <dd><input type="date" value="" name="endDate" required></dd>
+        </dl>
+        <dl>
+            <dt>From time (include):</dt>
+            <dd><input type="time" value="" name="startTime" required></dd>
+        </dl>
+        <dl>
+            <dt>To time (exclude):</dt>
+            <dd><input type="time" value="" name="endTime" required></dd>
+        </dl>
+        <button type="submit">Save</button>
+    </form>
+</section>
 </body>
 </html>

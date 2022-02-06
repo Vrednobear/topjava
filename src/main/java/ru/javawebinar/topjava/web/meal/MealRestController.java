@@ -23,7 +23,7 @@ import java.util.List;
 public class MealRestController {
     Logger logger = LoggerFactory.getLogger(MealRestController.class);
 
-//    @Autowired
+    @Autowired
     private MealService service;
 
 //no parameters TODO:CHECK USER ID
