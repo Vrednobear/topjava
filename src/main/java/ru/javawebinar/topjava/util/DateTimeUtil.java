@@ -8,15 +8,11 @@ import java.time.format.DateTimeFormatter;
 public class DateTimeUtil {
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
-//    public static boolean isBetweenHalfOpen(LocalTime lt, LocalTime startTime, LocalTime endTime) {
-//        return lt.compareTo(startTime) >= 0 && lt.compareTo(endTime) < 0;
-//    }
-
-    public static boolean isBetweenHalfOpen(LocalTime lt,LocalDate ld,
+    public static boolean isBetweenHalfOpen(LocalTime lt, LocalDate ld,
                                             LocalDate startDate, LocalTime startTime,
                                             LocalDate endDate, LocalTime endTime) {
 
-        return ld.compareTo(startDate)>=0 && ld.compareTo(endDate) <= 0 &&
+        return ld.compareTo(startDate) >= 0 && ld.compareTo(endDate) <= 0 &&
                 (lt.compareTo(startTime) >= 0 && lt.compareTo(endTime) < 0);
     }
 

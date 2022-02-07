@@ -15,9 +15,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static ru.javawebinar.topjava.util.ValidationUtil.checkNotFound;
-import static ru.javawebinar.topjava.util.ValidationUtil.checkNotFoundWithId;
-
 @Service
 public class MealService {
     private MealRepository repository;
@@ -27,60 +24,44 @@ public class MealService {
         this.repository = repository;
     }
 
-    //TODO: REFACTOR getAll and getFiltered
-
-    //USER ID????
     public List<MealTo> getAll(int userId, int userCalories) {
-        List<MealTo> list = MealsUtil.getTosForUser(repository.getAll(), userCalories, userId);
-        if(list.isEmpty()) return Collections.emptyList();
+        List<MealTo> list = MealsUtil.getTosForUser(repository.getAll(userId), userCalories, userId);
+        if (list.isEmpty()) return Collections.emptyList();
         else return list;
     }
 
-    //USER ID???
     public List<MealTo> getFiltered(int userId, int userCalories, LocalDate startDate, LocalTime startTime, LocalDate endDate, LocalTime endTime) {
         List<MealTo> list = repository.getFiltered(userId, userCalories, startDate, startTime, endDate, endTime);
-        if(list.isEmpty()) return Collections.emptyList();
+        if (list.isEmpty()) return Collections.emptyList();
         else return list;
     }
 
     public MealTo get(int id, int userId, int userCalories) {
-        List<MealTo> list = MealsUtil.getTosForUser(repository.getAll(), userCalories, userId);
+        List<MealTo> list = MealsUtil.getTosForUser(repository.getAll(userId), userCalories, userId);
+        
         if (list.isEmpty()) {
             throw new NotFoundException("The meal with id = " + id + "not found for user " + userId);
         }
-
         MealTo gottenMealTo = list.stream()
                 .filter(mealTo -> mealTo.getId() == id)
-                .collect(Collectors.toList())
-                .get(0);
-        ValidationUtil.checkNotFoundWithId(gottenMealTo,id);
-//        if(gottenMealTo == null){
-//            throw new NotFoundException("The meal with id = " + id + "not found for user " + userId);
-//        }
-
+                .findFirst().get();
+        ValidationUtil.checkNotFoundWithId(gottenMealTo, id);
         return gottenMealTo;
     }
 
     public void delete(int id, int userId) {
-      boolean result = repository.delete(id, userId);
-      ValidationUtil.checkNotFoundWithId(result,id);
-//      if(result) throw new NotFoundException("The meal with id = " + id + "for user " + userId + "is not found");
+        boolean result = repository.delete(id, userId);
+        ValidationUtil.checkNotFoundWithId(result, id);
     }
 
     public MealTo create(Meal meal, int userId, int userCaloriesPerDay) {
-      Meal savedMeal = repository.save(meal,userId);
-      ValidationUtil.checkNotFoundWithId(savedMeal,meal.getId());
-//        if(savedMeal == null){
-//            throw new NotFoundException("The meal " + meal + " is not for user " + meal.getUserId());
-//        }
-     return MealsUtil.getTo(repository.getAll(),meal,userCaloriesPerDay,userId);
+        Meal savedMeal = repository.save(meal, userId);
+        ValidationUtil.checkNotFoundWithId(savedMeal, meal.getId());
+        return MealsUtil.getTo(repository.getAll(userId), meal, userCaloriesPerDay, userId);
     }
 
     public void update(Meal meal, int userId) {
-       Meal savedMeal =  repository.save(meal,userId);
-       ValidationUtil.checkNotFoundWithId(savedMeal,meal.getId());
-//       if(savedMeal == null){
-//           throw new NotFoundException("The meal " + meal + " is not for user " + meal.getUserId());
-//       }
+        Meal savedMeal = repository.save(meal, userId);
+        ValidationUtil.checkNotFoundWithId(savedMeal, meal.getId());
     }
 }
