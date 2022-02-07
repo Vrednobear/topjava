@@ -34,8 +34,7 @@
         </tr>
         </thead>
         <jsp:useBean id="meals" scope="request" type="java.util.List"/>
-        <c:forEach items="${meals}" var="meal">
-            <jsp:useBean id="meal" type="ru.javawebinar.topjava.model.MealTo"/>
+        <c:forEach items="${requestScope.meals}" var="meal">
             <tr class="${meal.excess ? 'excess' : 'normal'}">
                 <td>
                         <%--${meal.dateTime.toLocalDate()} ${meal.dateTime.toLocalTime()}--%>
