@@ -13,7 +13,7 @@ import java.util.Arrays;
 
 public class SpringMain {
     public static void main(String[] args) {
-        try(ConfigurableApplicationContext appCtx = new ClassPathXmlApplicationContext("classpath:spring/spring-app.xml")) {
+        try (ConfigurableApplicationContext appCtx = new ClassPathXmlApplicationContext("spring/spring-app.xml", "spring/inmemory.xml")){
             System.out.println("Bean definition names: " + Arrays.toString(appCtx.getBeanDefinitionNames()));
             AdminRestController adminRestController = appCtx.getBean(AdminRestController.class);
             adminRestController.create(new User(null,"userName","email","pass", Role.ADMIN));
