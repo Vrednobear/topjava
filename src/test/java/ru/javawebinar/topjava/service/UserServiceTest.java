@@ -33,8 +33,8 @@ public class UserServiceTest {
     @Test
     public void create() {
         User created = service.create(getNew());
-        User newUser = getNew();
         Integer id = created.getId();
+        User newUser = getNew();
         newUser.setId(id);
         assertMatch(service.get(id), newUser);
     }
@@ -85,6 +85,6 @@ public class UserServiceTest {
         User user = getUpdated();
         Integer id = user.getId();
         service.update(user);
-        assertMatch(service.get(id),user);
+        assertMatch(service.get(id),getUpdated());
     }
 }
