@@ -12,9 +12,9 @@ import ru.javawebinar.topjava.UserTestData;
 import ru.javawebinar.topjava.repository.inmemory.InMemoryUserRepository;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
-@Ignore
 @ContextConfiguration("classpath:spring/spring-app.xml")
 @RunWith(SpringRunner.class)
+@Ignore
 public class InMemoryAdminRestControllerSpringTest {
 
     @Autowired
