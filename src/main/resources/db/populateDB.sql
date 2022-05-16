@@ -4,9 +4,9 @@ DELETE FROM users;
 ALTER SEQUENCE global_seq RESTART WITH 100000;
 
 
-INSERT INTO users (name, email, password)
-VALUES ('User', 'user@yandex.ru', 'password'),
-('Admin', 'admin@gmail.com', 'admin');
+INSERT INTO users (name, email, password,registered)
+VALUES ('User', 'user@yandex.ru', 'password','2020-01-30 09:00:00'),
+('Admin', 'admin@gmail.com', 'admin','2019-02-10 16:55:00');
 -- ('Guest', 'guest@gmail.com', 'guest');
 
 -- INSERT INTO users(name,email,password)

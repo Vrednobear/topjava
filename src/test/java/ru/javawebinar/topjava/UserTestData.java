@@ -4,9 +4,12 @@ import ru.javawebinar.topjava.model.AbstractBaseEntity;
 import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.model.User;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
+import java.util.regex.Pattern;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static ru.javawebinar.topjava.model.AbstractBaseEntity.*;
@@ -17,9 +20,21 @@ public class UserTestData {
     public static final int GUEST_ID = START_SEQ + 2;
     public static final int NOT_FOUND = 10;
 
-    public static final User USER = new User(USER_ID, "User", "user@yandex.ru", "password", Role.USER);
-    public static final User ADMIN = new User(ADMIN_ID, "Admin", "admin@gmail.com", "admin", Role.ADMIN);
-    public static final User guest = new User(GUEST_ID, "Guest", "guest@gmail.com", "guest");
+    private static SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+    public static User USER;
+    public static User ADMIN;
+    public static User GUEST;
+
+    static {
+        try {
+            USER = new User(USER_ID, "User", "user@yandex.ru", "password", formatter.parse("2020-01-30 09:00:00"), Role.USER);
+            ADMIN = new User(ADMIN_ID, "Admin", "admin@gmail.com", "admin", formatter.parse("2019-02-10 16:55:00"), Role.ADMIN);
+            GUEST = new User(GUEST_ID, "Guest", "guest@gmail.com", "guest");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
 
     //public static final User GUEST = new User(GUEST_ID, "Guest", "guest@gmail.com", "guest");
     public static User getNew() {
